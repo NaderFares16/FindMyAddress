@@ -1,14 +1,20 @@
 package Static;
 
-import java.awt.EventQueue;
-
-import javax.swing.JDialog;
-import java.awt.Toolkit;
-import javax.swing.JLabel;
-import java.awt.SystemColor;
-import javax.swing.JButton;
 import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.EventQueue;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.net.URI;
+
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class About extends JDialog {
 
@@ -35,10 +41,11 @@ public class About extends JDialog {
 	 * Create the dialog.
 	 */
 	public About() {
+		setModal(true);
 		setResizable(false);
 		setTitle("About");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(About.class.getResource("/ZIP/local.png")));
-		setBounds(100, 100, 450, 300);
+		setBounds(150, 150, 450, 300);
 		getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Find My Address - v0.1");
@@ -49,31 +56,60 @@ public class About extends JDialog {
 		lblNewLabel_1.setBounds(21, 97, 155, 13);
 		getContentPane().add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("API Service:");
-		lblNewLabel_2.setBounds(21, 152, 182, 13);
-		getContentPane().add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel("republicavirtual.com.br");
-		lblNewLabel_3.setForeground(SystemColor.textHighlight);
-		lblNewLabel_3.setBounds(96, 152, 107, 13);
+		JLabel lblNewLabel_3 = new JLabel("API Service:");
+		lblNewLabel_3.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		lblNewLabel_3.setBounds(21, 152, 74, 13);
 		getContentPane().add(lblNewLabel_3);
 		
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setToolTipText("GitHub");
-		btnNewButton.setIcon(new ImageIcon(About.class.getResource("/ZIP/github.png")));
-		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(21, 202, 32, 32);
-		getContentPane().add(btnNewButton);
+		JLabel lblAPIServices = new JLabel("republicavirtual.com.br");
+		lblAPIServices.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				link("https://republicavirtual.com.br/");
+			}
+		});
+		lblAPIServices.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblAPIServices.setForeground(SystemColor.textHighlight);
+		lblAPIServices.setBounds(96, 152, 149, 13);
+		getContentPane().add(lblAPIServices);
 		
-		JButton btnNewButton_1 = new JButton("");
-		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_1.setToolTipText("GitHub");
-		btnNewButton_1.setIcon(new ImageIcon(About.class.getResource("/ZIP/linkedin.png")));
-		btnNewButton_1.setBorder(null);
-		btnNewButton_1.setBounds(63, 202, 32, 32);
-		getContentPane().add(btnNewButton_1);
+		JButton btnGithub = new JButton("");
+		btnGithub.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				link("https://github.com/NaderFares16");
+			}
+		});
+		btnGithub.setToolTipText("GitHub");
+		btnGithub.setIcon(new ImageIcon(About.class.getResource("/ZIP/github.png")));
+		btnGithub.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnGithub.setBorder(null);
+		btnGithub.setBounds(21, 202, 32, 32);
+		getContentPane().add(btnGithub);
+		
+		JButton btnLinked = new JButton("");
+		btnLinked.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				link("https://www.linkedin.com/in/nader-ali-fares/");
+			}
+		});
+		btnLinked.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnLinked.setToolTipText("GitHub");
+		btnLinked.setIcon(new ImageIcon(About.class.getResource("/ZIP/linkedin.png")));
+		btnLinked.setBorder(null);
+		btnLinked.setBounds(63, 202, 32, 32);
+		getContentPane().add(btnLinked);
+		
 
+	} // CONSTRUCTOR END
+	
+	private void link(String website) {
+		Desktop desktop = Desktop.getDesktop();
+		try {
+			URI uri = new URI(website);
+			desktop.browse(uri);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 }

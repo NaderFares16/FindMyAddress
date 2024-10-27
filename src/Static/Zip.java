@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -121,10 +122,26 @@ public class Zip extends JFrame {
 		contentPane.add(btnClear);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textCEP.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Informe o CEP");
+					textCEP.requestFocus();
+				} else {
+					// SEARCH ZIP
+				}
+			}
+		});
 		btnBuscar.setBounds(260, 41, 85, 21);
 		contentPane.add(btnBuscar);
 		
 		JButton btnAbout = new JButton("");
+		btnAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				About about = new About();
+				about.setVisible(true);
+			}
+		});
 		btnAbout.setToolTipText("Sobre");
 		btnAbout.setActionCommand("");
 		btnAbout.setIcon(new ImageIcon(Zip.class.getResource("/ZIP/about.png")));
