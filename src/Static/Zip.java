@@ -8,6 +8,8 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.Iterator;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -19,6 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
 import Atxy2k.CustomTextField.RestrictedTextField;
 
@@ -33,6 +39,8 @@ public class Zip extends JFrame {
 	private JTextField textDistrict;
 	private JTextField textCity;
 	private JLabel lblUf;
+	private JComboBox comboUF;
+	private JLabel lblStatus;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -108,7 +116,7 @@ public class Zip extends JFrame {
 		lblUf.setBounds(341, 219, 25, 13);
 		contentPane.add(lblUf);
 		
-		JComboBox comboUF = new JComboBox();
+		comboUF = new JComboBox();
 		comboUF.setModel(new DefaultComboBoxModel(new String[] {"", "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}));
 		comboUF.setBounds(376, 215, 73, 21);
 		contentPane.add(comboUF);
@@ -128,11 +136,11 @@ public class Zip extends JFrame {
 					JOptionPane.showMessageDialog(null, "Informe o CEP");
 					textCEP.requestFocus();
 				} else {
-					// SEARCH ZIP
+					searchZIP();
 				}
 			}
 		});
-		btnBuscar.setBounds(260, 41, 85, 21);
+		btnBuscar.setBounds(316, 41, 85, 21);
 		contentPane.add(btnBuscar);
 		
 		JButton btnAbout = new JButton("");
@@ -149,7 +157,7 @@ public class Zip extends JFrame {
 		btnAbout.setBorder(null);
 		btnAbout.setBackground(SystemColor.control);
 		btnAbout.setBounds(new Rectangle(0, 0, 32, 32));
-		btnAbout.setBounds(376, 35, 32, 32);
+		btnAbout.setBounds(432, 35, 32, 32);
 		contentPane.add(btnAbout);
 		
 		// ATXY2K LIBRARY FOR TEXTFIELD VALIDATION
@@ -159,4 +167,52 @@ public class Zip extends JFrame {
 		validate.setLimit(8);
 		
 	} // CONSTRUCTOR END
+	
+	private void searchZIP() {
+		String street = "";
+		String streetType = "";
+		String result = null;
+		String zip = textCEP.getText();
+		
+		try {
+			URL url = new URL("http://cep.republicavirtual.com.br/web_cep.php?cep=" + zip + "&formato=xml");
+			SAXReader xml = new SAXReader();
+			Document document = xml.read(url);
+			Element root = document.getRootElement();
+			for (Iterator<Element> it = root.elementIterator(); it.hasNext();) {
+		        Element element = it.next();
+		        if (element.getQualifiedName().equals("cidade")) {
+		        	textCity.setText(element.getText());
+		        }
+		        if (element.getQualifiedName().equals("bairro")) {
+		        	textDistrict.setText(element.getText());
+		        }
+		        if (element.getQualifiedName().equals("uf")) {
+		        	comboUF.setSelectedItem(element.getText());
+		        }
+		        if (element.getQualifiedName().equals("tipo_logradouro")) {
+		        	streetType = element.getText();
+		        }
+		        if (element.getQualifiedName().equals("logradouro")) {
+		        	street = element.getText();
+		        }
+		        if (element.getQualifiedName().equals("resultado")) {
+		        	result = element.getText();
+		        	if (result.equals("1")) {
+		        		
+		        	} else {
+		        		JOptionPane.showMessageDialog(null, "CEP Não Encontrado");
+		        	}
+		        }
+		    }
+			
+			// SET STREET
+			
+			textAddress.setText(streetType + " " + street);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+	}
 }
