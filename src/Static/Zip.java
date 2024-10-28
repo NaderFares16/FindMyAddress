@@ -58,7 +58,7 @@ public class Zip extends JFrame {
 	public Zip() {
 		setResizable(false);
 		setTitle("Find My Address");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Zip.class.getResource("/ZIP/local.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Zip.class.getResource("/ZIP/icon.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 532, 385);
 		contentPane = new JPanel();
@@ -124,6 +124,7 @@ public class Zip extends JFrame {
 		JButton btnClear = new JButton("Limpar");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				erase();
 			}
 		});
 		btnClear.setBounds(32, 277, 85, 21);
@@ -215,4 +216,14 @@ public class Zip extends JFrame {
 		}
 		
 	}
+	
+	private void erase() {
+		textCEP.setText(null);
+		textAddress.setText(null);
+		textDistrict.setText(null);
+		textCity.setText(null);
+		comboUF.setSelectedItem(null);
+		textCEP.requestFocus();
+	}
+	
 }

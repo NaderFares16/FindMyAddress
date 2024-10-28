@@ -44,7 +44,7 @@ public class About extends JDialog {
 		setModal(true);
 		setResizable(false);
 		setTitle("About");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(About.class.getResource("/ZIP/local.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(About.class.getResource("/ZIP/icon.png")));
 		setBounds(150, 150, 450, 300);
 		getContentPane().setLayout(null);
 		
